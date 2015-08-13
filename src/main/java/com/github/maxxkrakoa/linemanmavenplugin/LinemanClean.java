@@ -36,8 +36,13 @@ public class LinemanClean extends LinemanBase {
         CommandRunner runner = new CommandRunner();
         // make sure the environment is in place by running npm install
         npmInstall(runner);
-        // run lineman clean
-        runner.run("./node_modules/.bin/lineman clean --force --no-color", webappDir, buildAdditionalPaths());
+        // run lineman clean if lineman has been installed
+        File f = new File(webappDir.getPath() + "/node_modules/.bin/lineman");
+        if(f.exists()) {
+            runner.run("./node_modules/.bin/lineman clean --force --no-color", webappDir, buildAdditionalPaths());
+        } else {
+            getLog().info("Skipping lineman clean, lineman is not installed...");
+        }
     }
 
 }
